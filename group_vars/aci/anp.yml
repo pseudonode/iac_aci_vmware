@@ -1,0 +1,7 @@
+---
+
+anps:
+  - name: "CLOUD-APP-1"
+    description: "Cloud Application 1"
+    tenant: "CloudTenant"
+

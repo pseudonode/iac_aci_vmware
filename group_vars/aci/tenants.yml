@@ -1,0 +1,5 @@
+---
+
+tenants:
+  - name: "CloudTenant"
+    description: "Created by Ansible"

@@ -1,0 +1,5 @@
+---
+- name: Deploy infrastructure
+  hosts: aci
+  roles:
+    - aci
