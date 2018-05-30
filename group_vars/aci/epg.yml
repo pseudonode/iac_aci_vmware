@@ -9,10 +9,6 @@ epg:
     domain: AZ-VMWARE-POC
     domain_type: vmm
     vm_provider: vmware
-    contract1_name: WEB-TO-APP
-    contract1_type: consumer
-    contract2_name: WEB-TO-L3OUT
-    contract2_type: provider
 
   - tenant: CloudTenant
     ap: CLOUD-APP-1
@@ -22,10 +18,6 @@ epg:
     domain: AZ-VMWARE-POC
     domain_type: vmm
     vm_provider: vmware
-    contract1_name: WEB-TO-APP
-    contract1_type: provider
-    contract2_name: APP-TO-DB
-    contract2_type: consumer
 
   - tenant: CloudTenant
     ap: CLOUD-APP-1
@@ -35,5 +27,3 @@ epg:
     domain: AZ-VMWARE-POC
     domain_type: vmm
     vm_provider: vmware
-    contract1_name: APP-TO-DB
-    contract1_type: provider

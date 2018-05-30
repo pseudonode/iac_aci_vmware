@@ -3,8 +3,8 @@
   - name: Add a new tenant
     aci_tenant:
       host: apic1
-      username: "{{ username }}"
-      password: "{{ password }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
       validate_certs: no
       tenant: "{{ item.name }}"
       description: "{{ item.description }}"
@@ -14,8 +14,8 @@
   - name: Add a new ANP to Tenant
     aci_ap:
       host: apic1
-      username: "{{ username }}"
-      password: "{{ password }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
       validate_certs: no
       tenant: "{{ item.tenant }}"
       ap: "{{ item.name }}"
@@ -26,8 +26,8 @@
   - name: Add a new bd
     aci_bd:
       host: apic1
-      username: "{{ username }}"
-      password: "{{ password }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
       validate_certs: no
       tenant: "{{ item.tenant }}"
       bd: "{{ item.name }}"
@@ -39,8 +39,8 @@
   - name: create a subnet with options
     aci_bd_subnet:
       host: apic1
-      username: "{{ username }}"
-      password: "{{ password }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
       validate_certs: no
       tenant: "{{ item.tenant }}"
       bd: "{{ item.name }}"
@@ -53,19 +53,18 @@
   - name: associate a bd to an existing l3out
     aci_bd_to_l3out:
       host: apic1
-      username: "{{ username }}"
-      password: "{{ password }}"
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
       validate_certs: no
       tenant: "{{ item.tenant }}"
       bd: "{{ item.name }}"
       l3out: "{{ item.l3out }}"
     with_items: "{{ bds }}"
     when: "'WEB-TIER' in item.name" 
-
   - name: Add a new epg
     aci_epg:
       host: apic1
-      username: "{{ username }}"
+      username: "{{ aci_username }}"
       password: "{{ password }}"
       validate_certs: no
       tenant: "{{ item.tenant }}"
@@ -79,7 +78,7 @@
   - name: Add a new domain to EPG binding
     aci_epg_to_domain:
       host: apic1
-      username: "{{ username }}"
+      username: "{{ aci_username }}"
       password: "{{ password }}"
       validate_certs: no
       tenant: "{{ item.tenant }}"
@@ -94,7 +93,7 @@
   - name: Add a new contract for EPG to EPG Communication
     aci_epg_to_contract:
       host: apic1
-      username: "{{ username }}"
+      username: "{{ aci_username }}"
       password: "{{ password }}"
       validate_certs: no
       tenant: "{{ item.tenant }}"
@@ -105,11 +104,10 @@
       state: present
     with_items: "{{ epg_contracts }}"
 
-
   - name: Add a new contract for EPG to L3OUT Communication
     aci_epg_to_contract:
       host: apic1
-      username: "{{ username }}"
+      username: "{{ aci_username }}"
       password: "{{ password }}"
       validate_certs: no
       tenant: "{{ item.tenant }}"

@@ -2,6 +2,12 @@
 - name: Deploy infrastructure
   hosts: aci
   gather_facts: False
+  vars_prompt:
+    - name: "aci_username"
+      prompt: "Please introduce ACI username"
+      private: no
+    - name: "aci_password"
+      prompt: "Please introduce ACI password"
   roles:
     - aci
 
@@ -9,6 +15,15 @@
 - name: VM Creation
   hosts: vsphere
   gather_facts: False
+  vars_prompt:
+    - name: "vcenter_host"
+      prompt: "Please introduce vCenter IP address"
+      private: no
+    - name: "vcenter_user"
+      prompt: "Please introduce vCenter username"
+      private: no
+    - name: "vcenter_pass"
+      prompt: "Please introduce vCenter password"
   roles:
     - vsphere
 
