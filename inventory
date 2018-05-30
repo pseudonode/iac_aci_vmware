@@ -10,3 +10,6 @@ localhost ansible_connection=local
 apic1 ansible_host=172.22.140.4 ansible_port=443
 
 [vsphere]
+cloudtenant-web-tier
+cloudtenant-app-tier
+cloudtenant-db-tier

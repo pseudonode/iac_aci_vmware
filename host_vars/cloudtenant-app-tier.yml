@@ -1,0 +1,22 @@
+---
+
+datacenter: ACI-LAB
+folder: /Discovered virtual machine
+name: CLOUDTENANT-APP-TIER
+state: poweredon
+template: centos7
+disk_size: 20
+provision: thin
+datastore: SAN-DS-01
+memory: 2048
+cpus: 2
+network_name: CloudTenant|CLOUD-APP-1|APP-TIER
+network_type: static
+ip: "10.84.11.10"
+netmask: "255.255.255.0"
+gateway: "10.84.11.1"
+mac: 00:50:56:00:00:aa
+vm_hostname: "cloudtenant-app-tier"
+dns1: 8.8.8.8
+dns2: 1.1.1.1
+

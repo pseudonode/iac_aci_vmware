@@ -60,6 +60,7 @@
       bd: "{{ item.name }}"
       l3out: "{{ item.l3out }}"
     with_items: "{{ bds }}"
+    when: "'WEB-TIER' in item.name" 
 
   - name: Add a new epg
     aci_epg:

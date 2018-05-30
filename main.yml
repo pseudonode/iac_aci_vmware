@@ -1,5 +1,14 @@
 ---
 - name: Deploy infrastructure
   hosts: aci
+  gather_facts: False
   roles:
     - aci
+
+
+- name: VM Creation
+  hosts: vsphere
+  gather_facts: False
+  roles:
+    - vsphere
+

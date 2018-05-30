@@ -1,7 +1,7 @@
 ---
 
 bds:
-  - name: "WEB-Tier"
+  - name: "WEB-TIER"
     description: "Bridge Domain 1"
     tenant: "CloudTenant"
     vrf: "default"
@@ -11,23 +11,21 @@ bds:
     scope: "public"
     l3out: "SESK-L3OUT-BGP"
 
-  - name: "APP-Tier"
+  - name: "APP-TIER"
     description: "Bridge Domain 2"
     tenant: "CloudTenant"
     vrf: "default"
     subnet_name: "app-tier-subnet"
     gw: "10.84.11.1"
     mask: "24"
-    scope: "public"
-    l3out: "SESK-L3OUT-BGP"
+    scope: "private"
 
-  - name: "DB-Tier"
+  - name: "DB-TIER"
     description: "Bridge Domain 3"
     tenant: "CloudTenant"
     vrf: "default"
     subnet_name: "db-subnet"
     gw: "10.84.12.1"
     mask: "24"
-    scope: "public"
-    l3out: "SESK-L3OUT-BGP"
+    scope: "private"
 
