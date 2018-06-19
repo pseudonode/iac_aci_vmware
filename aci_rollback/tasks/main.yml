@@ -37,6 +37,7 @@
       tenant: "{{ item.tenant }}"
       bd: "{{ item.name }}"
       l3out: "{{ item.l3out }}"
+      state: absent
     with_items: "{{ bd_l3out }}"
 
   - name: Delete BD Subnet
@@ -51,6 +52,7 @@
       gateway: "{{ item.gw }}"
       mask: "{{ item.mask }}"
       scope: "{{ item.scope }}"
+      state: absent
     with_items: "{{ bds }}"
 
   - name: Delete Bridge Domains

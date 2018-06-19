@@ -1,5 +1,5 @@
 ---
-- name: Deploy infrastructure
+- name: ACI Validation
   hosts: aci
   gather_facts: False
   ignore_errors: True
@@ -11,4 +11,3 @@
       prompt: "Please introduce ACI password"
   roles:
     - aci_validation
-    - vsphere_validation
