@@ -1,0 +1,25 @@
+---
+
+- name: Validate VM Exists
+  vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_user }}"
+    password: "{{ vcenter_pass }}"
+    validate_certs: no
+    datacenter: "{{ datacenter }}"
+    folder: "{{ folder }}"
+    name: "{{ name }}"
+    state: present
+    template: "{{ template }}"
+    disk:
+    - size_gb: "{{ disk_size }}"
+      type: "{{ provision }}"
+      datastore: "{{ datastore }}"
+    hardware:
+      memory_mb: "{{ memory }}"
+      num_cpus: "{{ cpus }}"
+  delegate_to: localhost
+  register: deploy
+
+- debug:
+    var: deploy

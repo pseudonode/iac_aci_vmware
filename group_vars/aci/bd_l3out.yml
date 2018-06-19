@@ -1,0 +1,12 @@
+---
+
+bd_l3out:
+  - name: "WEB-TIER"
+    description: "Bridge Domain 1"
+    tenant: "CloudTenant"
+    vrf: "default"
+    subnet_name: "web-tier-subnet"
+    gw: "10.84.10.1"
+    mask: "24"
+    scope: "public"
+    l3out: "SESK-L3OUT-BGP"

@@ -1,0 +1,35 @@
+---
+
+- name: Remove VMs from vSphere
+  vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_user }}"
+    password: "{{ vcenter_pass }}"
+    validate_certs: no
+    datacenter: "{{ datacenter }}"
+    folder: "{{ folder }}"
+    name: "{{ name }}"
+    state: absent
+    force: yes
+    template: "{{ template }}"
+    disk:
+    - size_gb: "{{ disk_size }}"
+      type: "{{ provision }}"
+      datastore: "{{ datastore }}"
+    hardware:
+      memory_mb: "{{ memory }}"
+      num_cpus: "{{ cpus }}"
+    networks:
+    - name: "{{ network_name }}"
+      type: "{{ network_type }}"
+      ip: "{{ ip }}"
+      netmask: "{{ netmask }}"
+      gateway: "{{ gateway }}"
+    customization:
+      hostname: "{{ vm_hostname }}"
+      dns_servers:
+        - "{{ dns1 }}"
+        - "{{ dns2 }}"
+    #wait_for_ip_address: yes
+  delegate_to: localhost
+  register: deploy

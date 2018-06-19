@@ -3,3 +3,5 @@
 tenants:
   - name: "CloudTenant"
     description: "Created by Ansible"
+  - name: "FogTenant"
+    description: "Also Created by Ansible"

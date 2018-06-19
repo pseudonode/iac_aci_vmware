@@ -1,0 +1,14 @@
+---
+- name: Deploy infrastructure
+  hosts: aci
+  gather_facts: False
+  ignore_errors: True
+  vars_prompt:
+    - name: "aci_username"
+      prompt: "Please introduce ACI username"
+      private: no
+    - name: "aci_password"
+      prompt: "Please introduce ACI password"
+  roles:
+    - aci_validation
+    - vsphere_validation

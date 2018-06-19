@@ -1,0 +1,119 @@
+---
+
+  - name: Delete EPG to L3Out contract association
+    aci_epg_to_contract:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      ap: "{{ item.ap }}"
+      epg: "{{ item.epg }}"
+      contract: "{{ item.name }}"
+      contract_type: "{{ item.type }}"
+      state: absent
+    with_items: "{{ l3out_contracts }}"
+
+  - name: Delete EPG to EPG Contract Association
+    aci_epg_to_contract:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      ap: "{{ item.ap }}"
+      epg: "{{ item.epg }}"
+      contract: "{{ item.name }}"
+      contract_type: "{{ item.type }}"
+      state: absent
+    with_items: "{{ epg_contracts }}"
+
+  - name: Delete BD L3Out Association
+    aci_bd_to_l3out:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      bd: "{{ item.name }}"
+      l3out: "{{ item.l3out }}"
+    with_items: "{{ bd_l3out }}"
+
+  - name: Delete BD Subnet
+    aci_bd_subnet:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      bd: "{{ item.name }}"
+      subnet_name: "{{ item.subnet_name }}"
+      gateway: "{{ item.gw }}"
+      mask: "{{ item.mask }}"
+      scope: "{{ item.scope }}"
+    with_items: "{{ bds }}"
+
+  - name: Delete Bridge Domains
+    aci_bd:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      bd: "{{ item.name }}"
+      description: "{{ item.description }}"
+      vrf: "{{ item.vrf }}"
+      state: absent
+    with_items: "{{ bds }}"
+
+  - name: Delete domain to EPG Association
+    aci_epg_to_domain:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      ap: "{{ item.ap }}"
+      epg: "{{ item.name }}"
+      domain: "{{ item.domain }}"
+      domain_type: "{{ item.domain_type }}"
+      vm_provider: "{{ item.vm_provider }}"
+      state: absent
+    with_items: "{{ epg }}"
+
+  - name: Delete Endpoint Groups
+    aci_epg:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      ap: "{{ item.ap }}"
+      epg: "{{ item.name }}"
+      description: "{{ item.description }}"
+      bd: "{{ item.bd }}"
+      state: absent
+    with_items: "{{ epg }}"
+
+  - name: Delete application Profiles
+    aci_ap:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      ap: "{{ item.name }}"
+      description: "{{ item.description }}"
+      state: absent
+    with_items: "{{ anps }}"
+
+  - name: Delete Tenants
+    aci_tenant:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: no
+      tenant: "{{ item.name }}"
+      description: "{{ item.description }}"
+      state: absent
+    with_items: "{{ tenants }}"

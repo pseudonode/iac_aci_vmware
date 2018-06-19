@@ -1,0 +1,290 @@
+---
+
+  - name: Validate tenants
+    aci_tenant:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: no
+      tenant: "{{ item.name }}"
+      state: query
+    with_items: "{{ tenants }}"
+    register: output_tenant
+    tags: tag_tenant
+
+#  - debug:
+#      var: output_tenant.results
+#    tags: tag_tenant
+
+  - set_fact:
+      my_list: "{{ output_tenant | json_query('results[].current[].fvTenant') }}"
+    tags: tag_tenant
+
+  #- debug:
+  #    var: my_list1
+  #  tags: tag_tenant
+
+  #- debug:
+  #    msg:
+  #      - "{{ item.0.name }} and {{ item.1.attributes.name  }}"
+  #  with_together:
+  #    - "{{ tenants }}"
+  #    - "{{ my_list1 }}"
+  #  tags: tag_tenant
+
+  - assert:
+      that:
+        - "{{ item.0.name == item.1.attributes.name }}"
+    with_together:
+      - "{{ tenants }}"
+      - "{{ my_list }}"
+    tags: tag_tenant
+
+  - name: Validate ANP
+    aci_ap:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      ap: "{{ item.name }}"
+      description: "{{ item.description }}"
+      state: query
+    with_items: "{{ anps }}"
+    register: output_anp
+    tags: tag_anp
+
+  #- debug:
+  #    var: output_anp
+  #  tags: tag_anp
+
+  - set_fact:
+      my_list: "{{ output_anp | json_query('results[].current[].fvAp') }}"
+    tags: tag_anp
+
+  #- debug:
+  #    var: my_list
+  #  tags: tag_anp
+
+  - assert:
+      that:
+        - "{{ item.0.name == item.1.attributes.name }}"
+    with_together:
+      - "{{ anps }}"
+      - "{{ my_list }}"
+    tags: tag_anp
+
+  - name: Validate BD
+    aci_bd:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      bd: "{{ item.name }}"
+      description: "{{ item.description }}"
+      vrf: "{{ item.vrf }}"
+      state: query
+    with_items: "{{ bds }}"
+    register: output_bd
+    tags: tag_bd
+
+  #- debug:
+  #    var: output_bd['results']
+  #  tags: tag_bd
+
+  - set_fact:
+      my_list: "{{ output_bd | json_query('results[].current[].fvBD') }}"
+    tags: tag_bd
+
+  #- debug:
+  #    var: my_list
+  #  tags: tag_bd
+
+  - assert:
+      that:
+        - "{{ item.0.name == item.1.attributes.name }}"
+    with_together:
+      - "{{ bds }}"
+      - "{{ my_list }}"
+    tags: tag_bd
+
+  - name: Validate BD Subnets
+    aci_bd_subnet:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      bd: "{{ item.name }}"
+      subnet_name: "{{ item.subnet_name }}"
+      gateway: "{{ item.gw }}"
+      mask: "{{ item.mask }}"
+      scope: "{{ item.scope }}"
+      state: query
+    with_items: "{{ bds }}"
+    register: output_bd_subnets
+    tags: tag_bd_subnets
+
+  #- debug:
+  #    var: output_bd_subnets
+  #  tags: tag_bd_subnets
+
+  - set_fact:
+      my_list: "{{ output_bd_subnets | json_query('results[].current[].fvSubnet') }}"
+    tags: tag_bd_subnets
+
+  #- debug:
+  #    var: my_list
+  #  tags: tag_bd_subnets
+
+  #- debug:
+  #    msg:
+  #      - "{{ item.0.subnet_name }} and {{ item.1.attributes.name  }}"
+  #  with_together:
+  #    - "{{ bds }}"
+  #    - "{{ my_list }}"
+  #  tags: tag_bd_subnets
+
+  - assert:
+      that:
+        - "{{ item.0.subnet_name == item.1.attributes.name }}"
+    with_together:
+      - "{{ bds }}"
+      - "{{ my_list }}"
+    tags: tag_bd_subnets
+
+  - name: Validate BD association to L3Out
+    aci_bd_to_l3out:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ aci_password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      bd: "{{ item.name }}"
+      l3out: "{{ item.l3out }}"
+      state: query
+    with_items: "{{ bd_l3out }}"
+    register: output_bd_l3out
+    tags: tag_bd_l3out
+
+  #- debug:
+  #    var: output_bd_l3out
+  #  tags: tag_bd_l3out
+
+  - set_fact:
+      my_list: "{{ output_bd_l3out | json_query('results[].current[].fvRsBDToOut') }}"
+    with_items: "{{ bd_l3out }}"
+    tags: tag_bd_l3out
+
+  #- debug:
+  #    var: my_list
+  #  tags: tag_bd_l3out
+
+  #- debug:
+  #    msg:
+  #      - "{{ item.0.l3out }} and {{ item.1.attributes.tnL3extOutName }}"
+  #  with_together:
+  #    - "{{ bd_l3out }}"
+  #    - "{{ my_list }}"
+  #  tags: tag_bd_l3out
+
+  - assert:
+      that:
+        - "{{ item.0.l3out == item.1.attributes.tnL3extOutName }}"
+    with_together:
+      - "{{ bd_l3out }}"
+      - "{{ my_list }}"
+    tags: tag_bd_l3out
+
+  - name: Validate EPGs
+    aci_epg:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      ap: "{{ item.ap }}"
+      epg: "{{ item.name }}"
+      description: "{{ item.description }}"
+      bd: "{{ item.bd }}"
+      state: query
+    with_items: "{{ epg }}"
+    register: output_epgs
+    tags: tag_epg
+
+  #- debug:
+  #    var: output_epgs
+  #  tags: tag_epg
+
+  - set_fact:
+      my_list: "{{ output_epgs | json_query('results[].current[].fvAEPg') }}"
+    with_items: "{{ epg }}"
+    tags: tag_epg
+
+  #- debug:
+  #    var: my_list
+  #  tags: tag_epg
+
+  #- debug:
+  #    msg:
+  #      - "{{ item.0.name }} and {{ item.1.attributes.name }}"
+  #  with_together:
+  #    - "{{ epg }}"
+  #    - "{{ my_list }}"
+  #  tags: tag_epg
+
+  - assert:
+      that:
+        - "{{ item.0.name == item.1.attributes.name }}"
+    with_together:
+      - "{{ epg }}"
+      - "{{ my_list }}"
+    tags: tag_epg
+
+  - name: Validate EPG Domain Binding
+    aci_epg_to_domain:
+      host: apic1
+      username: "{{ aci_username }}"
+      password: "{{ password }}"
+      validate_certs: no
+      tenant: "{{ item.tenant }}"
+      ap: "{{ item.ap }}"
+      epg: "{{ item.name }}"
+      domain: "{{ item.domain }}"
+      domain_type: "{{ item.domain_type }}"
+      vm_provider: "{{ item.vm_provider }}"
+      state: present
+    with_items: "{{ epg }}"
+    register: output_epg_domain
+    tags: tag_epg_domain
+
+  #- debug:
+  #    var: output_epg_domain
+  #  tags: tag_epg_domain
+
+  - set_fact:
+      my_list: "{{ output_epg_domain | json_query('results[].current[].fvRsDomAtt') }}"
+    with_items: "{{ epg }}"
+    tags: tag_epg_domain
+
+  #- debug:
+  #    var: my_list
+  #  tags: tag_epg_domain
+
+  #- debug:
+  #    msg:
+  #      - "{{ 'uni/vmmp-VMware/dom-' + item.0.domain }} and {{ item.1.attributes.tDn }}"
+  #  with_together:
+  #    - "{{ epg }}"
+  #    - "{{ my_list }}"
+  #  tags: tag_epg_domain
+
+  - name: Assert that the EPG has the correct VMM domain associated
+    assert:
+      that:
+        - "{{ 'uni/vmmp-VMware/dom-' + item.0.domain == item.1.attributes.tDn }}"
+    with_together:
+      - "{{ epg }}"
+      - "{{ my_list }}"
+    tags: tag_epg_domain

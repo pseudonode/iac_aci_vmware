@@ -1,17 +1,5 @@
 ---
-- name: Deploy infrastructure
-  hosts: aci
-  gather_facts: False
-  vars_prompt:
-    - name: "aci_username"
-      prompt: "Please introduce ACI username"
-      private: no
-    - name: "aci_password"
-      prompt: "Please introduce ACI password"
-  roles:
-    - aci
-
-- name: VM Creation
+- name: VM Rollback
   hosts: vsphere
   gather_facts: False
   vars_prompt:
@@ -24,4 +12,16 @@
     - name: "vcenter_pass"
       prompt: "Please introduce vCenter password"
   roles:
-    - vsphere
+    - vsphere_rollback
+
+- name: ACI Rollback
+  hosts: aci
+  gather_facts: False
+  vars_prompt:
+    - name: "aci_username"
+      prompt: "Please introduce ACI username"
+      private: no
+    - name: "aci_password"
+      prompt: "Please introduce ACI password"
+  roles:
+    - aci_rollback
